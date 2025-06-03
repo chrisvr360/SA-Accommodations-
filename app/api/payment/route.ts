@@ -1,12 +1,19 @@
-import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
-import { type NextRequest, type NextResponse } from 'next/server';
-import db from '@/utils/db';
-import { formatDate } from '@/utils/format';
+import Stripe from "stripe";
+import { type NextRequest } from "next/server";
+import db from "@/utils/db";
+import { formatDate } from "@/utils/format";
 
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export async function POST(req: NextRequest) {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) {
+    return new Response(
+      JSON.stringify({ error: "Stripe secret key not configured." }),
+      { status: 500 }
+    );
+  }
+  const stripe = new Stripe(secretKey);
   const requestHeaders = new Headers(req.headers);
-  const origin = requestHeaders.get('origin');
+  const origin = requestHeaders.get("origin");
   const { bookingId } = await req.json();
 
   const booking = await db.booking.findUnique({
@@ -23,7 +30,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   if (!booking) {
     return Response.json(null, {
       status: 404,
-      statusText: 'Not Found',
+      statusText: "Not Found",
     });
   }
   const {
@@ -36,13 +43,13 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   try {
     const session = await stripe.checkout.sessions.create({
-      ui_mode: 'embedded',
+      ui_mode: "embedded",
       metadata: { bookingId: booking.id },
       line_items: [
         {
           quantity: 1,
           price_data: {
-            currency: 'usd',
+            currency: "usd",
             product_data: {
               name: `${name}`,
               images: [image],
@@ -54,7 +61,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
           },
         },
       ],
-      mode: 'payment',
+      mode: "payment",
       return_url: `${origin}/api/confirm?session_id={CHECKOUT_SESSION_ID}`,
     });
     return Response.json({ clientSecret: session.client_secret });
@@ -62,7 +69,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     console.log(error);
     return Response.json(null, {
       status: 500,
-      statusText: 'Internal Server Error',
+      statusText: "Internal Server Error",
     });
   }
-};
+}

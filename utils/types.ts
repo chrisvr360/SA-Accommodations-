@@ -22,3 +22,8 @@ export type Booking = {
   checkIn: Date;
   checkOut: Date;
 };
+
+export type SearchParams = {
+  category?: string;
+  search?: string;
+};

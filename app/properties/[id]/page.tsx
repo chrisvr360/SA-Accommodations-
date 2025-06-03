@@ -18,7 +18,7 @@ import SubmitReview from "@/components/reviews/SubmitReview";
 import PropertyReviews from "@/components/reviews/PropertyReviews";
 import { auth } from "@clerk/nextjs/server";
 
-async function PropertyDetailsPage({ params }: { params: { id: string } }) {
+async function PropertyDetailsPage({ params }: any) {
   const session = await auth();
   const userId = session?.userId;
   const property = await fetchPropertyDetails(params.id);

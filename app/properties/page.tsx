@@ -1,13 +1,9 @@
-import { PropertyManagement } from "@/components/PropertyManagement"
-import { fetchProperties } from "@/utils/actions"
-import PropertiesList from "@/components/properties/PropertiesList"
-import SearchBar from "@/components/properties/SearchBar"
+import { PropertyManagement } from "@/components/PropertyManagement";
+import { fetchProperties } from "@/utils/actions";
+import PropertiesList from "@/components/properties/PropertiesList";
+import SearchBar from "@/components/properties/SearchBar";
 
-export default async function PropertiesPage({
-  searchParams,
-}: {
-  searchParams: { search?: string; category?: string };
-}) {
+export default async function PropertiesPage({ searchParams }: any) {
   const properties = await fetchProperties({
     search: searchParams.search,
     category: searchParams.category,
@@ -22,4 +18,4 @@ export default async function PropertiesPage({
       </div>
     </main>
   );
-} 
+}
