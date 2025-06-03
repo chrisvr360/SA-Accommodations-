@@ -4,13 +4,11 @@ import PropertiesContainer from "@/components/home/PropertiesContainer";
 import SeedButton from "@/components/home/SeedButton";
 import { Suspense } from "react";
 
-export default function HomePage({ searchParams }: any) {
+export default async function HomePage({ searchParams }: any) {
+  const params = await searchParams;
   const category =
-    typeof searchParams.category === "string"
-      ? searchParams.category
-      : undefined;
-  const search =
-    typeof searchParams.search === "string" ? searchParams.search : undefined;
+    typeof params.category === "string" ? params.category : undefined;
+  const search = typeof params.search === "string" ? params.search : undefined;
 
   return (
     <section>
