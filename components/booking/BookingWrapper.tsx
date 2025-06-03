@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useProperty } from '@/utils/store';
-import { Booking } from '@/utils/types';
-import BookingCalendar from './BookingCalendar';
-import BookingContainer from './BookingContainer';
-import { useEffect } from 'react';
+import { useProperty } from "@/utils/store";
+import { Booking } from "@/utils/types";
+import BookingCalendar from "./BookingCalendar";
+import BookingContainer from "./BookingContainer";
+import { useEffect } from "react";
 
 type BookingWrapperProps = {
   propertyId: string;
@@ -22,7 +22,7 @@ export default function BookingWrapper({
       price,
       bookings,
     });
-  }, []);
+  }, [propertyId, price, bookings]);
   return (
     <>
       <BookingCalendar />

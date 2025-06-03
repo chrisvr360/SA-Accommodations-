@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { User } from "lucide-react";
 import { fetchProfileImage } from "@/utils/actions";
 
@@ -7,10 +8,12 @@ export default async function UserIcon() {
     return <User className="w-8 h-8 text-primary" />;
   }
   return (
-    <img
+    <Image
       src={profileImage}
       alt="profile"
-      className="w-8 h-8 rounded-full object-cover"
+      width={32}
+      height={32}
+      className="rounded-full object-cover"
     />
   );
 }
